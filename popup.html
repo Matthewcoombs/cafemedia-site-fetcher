@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/styles.css">
+    <script src="popup.js"></script>
+  </head>
+  <body>
+
+    <div id="menu">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="adThrive16.png" alt="AdThrive logo">
+             CafeMedia Site Fetcher</a>
+        </div>
+      </nav>
+
+      <form>
+        <div class="input-group mb-2" id="site-input">
+          <input type="text" class="form-control" id="site-name" placeholder="Site Name" aria-label="Site Name" aria-describedby="basic-addon2">
+
+          <select class="form-select" aria-label="Services Selection" id="service">
+            <option value="All">All</option>
+            <option value="AdThrive">AdThrive</option>
+            <option value="CAM">CAM</option>
+          </select>
+        </div>
+
+        <div class="submit-section">
+          <button type="submit" class="btn btn-success" id="submit">Submit</button>
+          <span id="record-count"></span>
+        </div>
+      </form>
+
+      <div class="alert alert-danger" role="alert" id="error" style="display: none;">
+
+      </div>
+
+      <div class="loading-spinner" id="spinner" style="display: none;">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </div>
+
+    </div>
+
+      <div id="content">
+      </div>
+
+    <script src="dist/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
