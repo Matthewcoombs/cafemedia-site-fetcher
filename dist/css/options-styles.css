@@ -1,0 +1,12 @@
+form {
+  margin: auto;
+  width: 90vw;
+}
+
+#save {
+  background-color: rgb(135, 207, 76);
+}
+
+button {
+  width: 100%;
+}

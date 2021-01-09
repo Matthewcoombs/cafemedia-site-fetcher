@@ -1,11 +1,11 @@
 window.onload = () => {
-
+  const instanceDetails = verifyInstance();
   const submitButton = document.getElementById('submit')
 
   submitButton.addEventListener("click", function (event) {
     event.preventDefault();
     clearListItems()
-    getSites();
+    getSites(instanceDetails);
   })
 }
 
@@ -21,7 +21,7 @@ function clearListItems() {
 
 function contentLoading(isLoading) {
   let loadingSpinner = document.getElementById('spinner')
-    let content = document.getElementById('content');
+  let content = document.getElementById('content');
   if (isLoading) {
     content.style.display = 'none'
     loadingSpinner.style.display = 'block';
@@ -57,18 +57,43 @@ function handleError(message) {
 
 }
 
+function verifyInstance() {
+  let instanceDetails = {
+    key: '',
+    domain: '',
+    instance: window.localStorage.getItem('instance'),
+  };
+  const instance = instanceDetails.instance;
+  if (instance === 'QA') {
+    instanceDetails.key = 'qaToken';
+    instanceDetails.domain = 'develop.api.dev.adthrive.com';
 
-function getSites() {
-  const token = window.localStorage.getItem('token');
+    const heading = document.getElementById('nav-brand');
+    const spanInstance = document.createElement('span');
+    spanInstance.style.color = 'rgb(135, 207, 76)';
+    spanInstance.innerText = ' [QA INSTANCE]';
+    heading.appendChild(spanInstance);
+    return instanceDetails;
+  }
+  else {
+    instanceDetails.key = 'token';
+    instanceDetails.domain = 'publisher-api.adthrive.com';
+    return instanceDetails;
+  }
+}
+
+
+function getSites(instanceDetail) {
+  const token = window.localStorage.getItem(instanceDetail.key);
   if (token === null) {
-    handleError('Failed to authenticate. Please login: https://publisher.adthrive.com/login')
+    handleError('Failed to authenticate. Please provide a valid token or login: https://publisher.adthrive.com/login')
     return;
   }
 
   let siteName = document.getElementById('site-name').value;
   let service = document.getElementById('service').value;
 
-  let requestURL = `https://publisher-api.adthrive.com/sites?include=users&filter[name]=~${siteName}&page[number]=1&sort=-updatedAt&page[size]=5000`
+  let requestURL = `https://${instanceDetail.domain}/sites?include=users&filter[name]=~${siteName}&page[number]=1&sort=-updatedAt&page[size]=5000`;
 
   if (service !== 'All') {
     requestURL =  requestURL + '&filter[service]=' + service
@@ -80,10 +105,16 @@ function getSites() {
 
   request.onreadystatechange = function() {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-
-
       resData = JSON.parse(this.response);
       appendListItems(resData);
+      contentLoading(false);
+    }
+    else if (this.readyState === XMLHttpRequest.DONE && this.status === 401) {
+      handleError('The token provided is invalid. Please update the current token');
+      contentLoading(false);
+    }
+    else if (this.readyState === XMLHttpRequest.DONE) {
+      handleError('There was an error processing your submission');
       contentLoading(false);
     }
   }

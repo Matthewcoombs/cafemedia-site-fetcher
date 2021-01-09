@@ -1,8 +1,8 @@
 {
   "name": "Get AdThrive/CAM sites",
-  "version": "1.0",
+  "version": "1.2",
   "description": "Quickly pull AdThrive or CAM site details",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["declarativeContent"],
   "background": {
     "scripts": ["background.js"]
   },
@@ -20,5 +20,9 @@
       "matches": ["*://*.publisher.adthrive.com/*", "*://*.admin.adthrive.com/*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
 }

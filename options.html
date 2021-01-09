@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="dist/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="dist/css/options-styles.css">
+  <title>My Test Extension Options</title></head>
+<body>
+
+<form>
+  <label for="instance">Instance:</label>
+  <select class="form-select" id="instance">
+    <option value="Live">Live</option>
+    <option value="QA">QA</option>
+  </select>
+
+
+  <div id="token-section" style="display: none;">
+    <hr>
+    <input type="text" class="form-control" id="tokenField" placeholder="qaToken" aria-label="qaToken">
+  </div>
+</form>
+<br>
+
+
+  <button id="save" class="btn btn-success">Save</button>
+
+
+
+<div class="alert alert-success" role="alert" style="display: none;" id="status">
+</div>
+
+<script src="options.js"></script>
+<script src="dist/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>
