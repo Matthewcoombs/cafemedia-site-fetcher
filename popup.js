@@ -1,10 +1,9 @@
 window.onload = () => {
   const instanceDetails = verifyInstance();
   const submitButton = document.getElementById('submit')
-
   submitButton.addEventListener("click", function (event) {
     event.preventDefault();
-    clearListItems()
+    clearListItems();
     getSites(instanceDetails);
   })
 }

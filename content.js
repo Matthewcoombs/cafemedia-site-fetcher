@@ -2,7 +2,6 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.message === "getToken") {
       let key = null;
-
       switch (window.location.hostname) {
         case 'publisher.adthrive.com':
           key = 'token';
