@@ -61,7 +61,15 @@ function verifyInstance() {
     key: '',
     domain: '',
     instance: window.localStorage.getItem('instance'),
+    redirection: window.localStorage.getItem('redirect')
   };
+  if (instanceDetails.redirection !== null) {
+    let redirectFlag = document.getElementById('redirect-flag');
+    redirectFlag.style.color = 'rgb(135, 207, 76)';
+    redirectFlag.innerText = 'Redirection ON';
+  }
+
+
   const instance = instanceDetails.instance;
   if (instance === 'QA') {
     instanceDetails.key = 'qaToken';

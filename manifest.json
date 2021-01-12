@@ -2,7 +2,7 @@
   "name": "Get AdThrive/CAM sites",
   "version": "1.2",
   "description": "Quickly pull AdThrive or CAM site details",
-  "permissions": ["declarativeContent", "webRequest", "webRequestBlocking", "*://*.adthrive.com/*", "https://core-3720.api.dev.adthrive.com/docs/"],
+  "permissions": ["declarativeContent", "webRequest", "webRequestBlocking", "*://*.adthrive.com/*"],
   "background": {
     "scripts": ["background.js"]
   },

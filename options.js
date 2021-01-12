@@ -47,6 +47,9 @@ function setAPIBranch() {
   if (branchName.value !== '') {
     window.localStorage.setItem("apiBranch", branchName.value);
   }
+  else {
+    window.localStorage.removeItem("apiBranch");
+  }
 }
 
 function updateConfirmation() {
