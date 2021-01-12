@@ -44,39 +44,6 @@ function appendListItems(resData) {
   }
 }
 
-// function displayOptions(setInstance) {
-//   let apiInstanceField = document.getElementById('apiInstance');
-//   let siteInput = document.getElementById('service');
-//   let submitSiteForm = document.getElementById('site-name');
-//   let getSites = document.getElementById('submit');
-
-//   if (setInstance) {
-//     siteInput.style.display = 'none';
-//     submitSiteForm.style.display = 'none';
-//     getSites.style.display = 'none';
-//     apiInstanceField.style.display = 'block';
-//     setAPIBranch()
-//   }
-//   else {
-//     apiInstanceField.style.display = 'none';
-//     siteInput.style.display = 'block';
-//     submitSiteForm.style.display = 'block';
-//     getSites.style.display = 'block';
-//   }
-// }
-
-// function setAPIBranch() {
-//   const setAPIInstanceButton = document.getElementById('submitInstance');
-//   const branchName = document.getElementById('branch-name');
-//   branchName.value = window.localStorage.getItem('apiBranch');
-//   setAPIInstanceButton.addEventListener("click", function (event) {
-//     if (branchName.value !== '');
-//     window.localStorage.setItem("apiBranch", branchName.value);
-//   })
-// }
-
-
-
 function handleMetaData(resData) {
   let recordCount = document.getElementById('record-count');
   recordCount.innerText = ' Total Matches Found: ' + resData.meta.totalItemCount;
