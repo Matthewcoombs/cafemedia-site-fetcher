@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.webRequest.onHeadersReceived.addListener(
     redirectUrl,
     {urls: ["*://develop.api.dev.adthrive.com/*"]},
-    ["blocking", "responseHeaders"]
+    ["blocking"]
 );
 
 
