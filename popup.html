@@ -17,6 +17,18 @@
       </nav>
 
       <form>
+        <!-- <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="apiCheck">
+          <label class="form-check-label" for="gridCheck">
+            Set API Instance
+          </label>
+
+          <div id="apiInstance" style="display: none;">
+            <input type="text" id="branch-name" class="form-control" placeholder="branch name" aria-label="API Branch Name" aria-describedby="basic-addon2">
+            <button type="submit" class="btn btn-success" id="submitInstance">Submit</button>
+          </div>
+        </div> -->
+
         <div class="input-group mb-2" id="site-input">
           <input type="text" class="form-control" id="site-name" placeholder="Site Name" aria-label="Site Name" aria-describedby="basic-addon2">
 
@@ -27,7 +39,7 @@
           </select>
         </div>
 
-        <div class="submit-section">
+        <div class="submit-section" id="submit-site-form">
           <button type="submit" class="btn btn-success" id="submit">Submit</button>
           <span id="record-count"></span>
         </div>

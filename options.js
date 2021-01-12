@@ -2,7 +2,7 @@ window.onload = () => {
 
   restore_options();
   const instance = document.getElementById('instance');
-  instance.addEventListener("change", verifyInstance)
+  instance.addEventListener("change", verifyInstance);
 
   const button = document.getElementById('save');
   button.addEventListener("click", function () {
@@ -36,6 +36,17 @@ function saveOptions(value) {
     window.localStorage.setItem("instance", "Live");
     updateConfirmation();
   }
+  setAPIBranch();
+}
+
+function setAPIBranch() {
+  const setAPIInstance = document.getElementById('apiCheck');
+  activateRedirects(setAPIInstance.checked);
+
+  const branchName = document.getElementById('branch-name');
+  if (branchName.value !== '') {
+    window.localStorage.setItem("apiBranch", branchName.value);
+  }
 }
 
 function updateConfirmation() {
@@ -52,6 +63,8 @@ function updateConfirmation() {
 
 function restore_options() {
   const savedInstance = window.localStorage.getItem('instance');
+  const savedAPIBranch = window.localStorage.getItem('apiBranch');
+  const redirects = window.localStorage.getItem('redirect');
 
   if (savedInstance === 'Live') {
     document.getElementById('instance').value = savedInstance;
@@ -61,5 +74,24 @@ function restore_options() {
     const qaToken = window.localStorage.getItem('qaToken');
     document.getElementById('instance').value = savedInstance;
     document.getElementById('tokenField').value = qaToken;
+  }
+
+  if (savedAPIBranch !== null && savedAPIBranch !== '') {
+    document.getElementById('branch-name').value = savedAPIBranch;
+  }
+
+  if (redirects) {
+    document.getElementById('apiCheck').checked = true;
+  }
+
+
+}
+
+function activateRedirects(activate_boolean) {
+  if (activate_boolean) {
+    window.localStorage.setItem("redirect", true);
+  }
+  else {
+    window.localStorage.removeItem("redirect");
   }
 }

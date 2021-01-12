@@ -8,13 +8,13 @@ body {
   top: 0;
   z-index: 5;
   background-color: #fff;
-  height: 155px;
+  height: 160px;
   width: 400px;
   box-shadow: 0px 3px 3px rgb(90, 87, 87);
 }
 
 #content {
-  margin-top: 155px;
+  margin-top: 160px;
 }
 
 #site-input {
