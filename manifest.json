@@ -1,6 +1,6 @@
 {
   "name": "Get AdThrive/CAM sites",
-  "version": "1.4",
+  "version": "1.5",
   "description": "Quickly pull AdThrive or CAM site details",
   "permissions": ["declarativeContent", "webRequest", "webRequestBlocking", "*://*.adthrive.com/*", "*://localhost/*"],
   "background": {

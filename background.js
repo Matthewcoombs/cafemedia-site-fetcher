@@ -36,7 +36,7 @@ chrome.webRequest.onHeadersReceived.addListener(
 function redirectUrl(details) {
   if (window.localStorage.getItem('redirect') !== null) {
     let url = details.url;
-    url = url.replace("develop.api.dev.adthrive.com", `${window.localStorage.getItem('apiBranch')}.api.dev.adthrive.com`);
+    url = url.replace("develop.api.dev.adthrive.com", `publisher-api.development.cafemedia.com/${window.localStorage.getItem('apiBranch')}`);
     return {
       redirectUrl: url
     };

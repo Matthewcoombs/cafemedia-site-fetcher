@@ -103,14 +103,14 @@ function getSites(instanceDetail) {
   let requestURL = `https://${instanceDetail.domain}/sites?include=users&filter[name]=~${siteName}&page[number]=1&sort=-updatedAt&page[size]=5000`;
 
   if (service !== 'All') {
-    requestURL =  requestURL + '&filter[service]=' + service
+    requestURL = requestURL + '&filter[service]=' + service
   }
 
   const request = new XMLHttpRequest();
   request.open("GET", requestURL, true)
   request.setRequestHeader('authorization', `Bearer ${token}`)
 
-  request.onreadystatechange = function() {
+  request.onreadystatechange = function () {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
       resData = JSON.parse(this.response);
       appendListItems(resData);
