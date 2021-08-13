@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 chrome.webRequest.onHeadersReceived.addListener(
     redirectUrl,
-    {urls: ["*://develop.api.dev.adthrive.com/*"]},
+    {urls: ["*://develop.api.dev.adthrive.com/*", "*://publisher-api.development.cafemedia.com/develop/*"]},
     ["blocking"]
 );
 
@@ -36,7 +36,10 @@ chrome.webRequest.onHeadersReceived.addListener(
 function redirectUrl(details) {
   if (window.localStorage.getItem('redirect') !== null) {
     let url = details.url;
-    url = url.replace("develop.api.dev.adthrive.com", `publisher-api.development.cafemedia.com/${window.localStorage.getItem('apiBranch')}`);
+    const redirectUrl = `publisher-api.development.cafemedia.com/${window.localStorage.getItem('apiBranch')}`;
+
+    url = url.includes('develop.api.dev.adthrive.com') ? url.replace("develop.api.dev.adthrive.com", redirectUrl) : url.replace("publisher-api.development.cafemedia.com/develop", redirectUrl);
+
     return {
       redirectUrl: url
     };

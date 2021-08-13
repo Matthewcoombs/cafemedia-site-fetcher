@@ -1,25 +1,38 @@
 body {
+  position: flex;
   height: 300px;
   width: 400px;
 }
+
 
 #menu {
   position: fixed;
   top: 0;
   z-index: 5;
   background-color: #fff;
-  height: 160px;
+  height: 250px;
   width: 400px;
   box-shadow: 0px 3px 3px rgb(90, 87, 87);
 }
 
 #content {
-  margin-top: 160px;
+  margin-top: 255px;
 }
 
 #site-input {
-  margin: auto;
   padding: 5px;
+}
+
+#site-filter {
+  padding: 8px;
+}
+
+.form-group {
+  padding: 2px;
+}
+
+#record-count {
+  font-size: .8em;
 }
 
 /* Loading Spinner */
@@ -31,6 +44,9 @@ body {
 
 #submit {
   background-color: rgb(135, 207, 76);
+  padding: 4px;
+  margin: 4px;
+  width: 200px;
 }
 
 .lds-ring {

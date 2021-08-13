@@ -56,6 +56,29 @@ function handleError(message) {
 
 }
 
+function clearError() {
+  let error = document.getElementById('error');
+  error.style.display = 'none';
+}
+
+function processGetRequestInputs(instanceDetail) {
+  let siteName = document.getElementById('site-name').value;
+  let service = document.getElementById('service').value;
+  let status = document.getElementById('status').value;
+
+  let requestURL = `https://${instanceDetail.domain}/sites?include=users&filter[name]=~${siteName}&page[number]=1&sort=-updatedAt&page[size]=5000`;
+
+  if (service !== 'All') {
+    requestURL = requestURL + '&filter[service]=' + service;
+  };
+
+  if (status !== '' && status !== null) {
+    requestURL = requestURL + '&filter[status]=' + status;
+  };
+  
+  return requestURL;
+}
+
 function verifyInstance() {
   let instanceDetails = {
     key: '',
@@ -91,20 +114,14 @@ function verifyInstance() {
 
 
 function getSites(instanceDetail) {
+  clearError();
   const token = window.localStorage.getItem(instanceDetail.key);
   if (token === null) {
     handleError('Failed to authenticate. Please provide a valid token or login: https://publisher.adthrive.com/login')
     return;
   }
 
-  let siteName = document.getElementById('site-name').value;
-  let service = document.getElementById('service').value;
-
-  let requestURL = `https://${instanceDetail.domain}/sites?include=users&filter[name]=~${siteName}&page[number]=1&sort=-updatedAt&page[size]=5000`;
-
-  if (service !== 'All') {
-    requestURL = requestURL + '&filter[service]=' + service
-  }
+  const requestURL = processGetRequestInputs(instanceDetail);
 
   const request = new XMLHttpRequest();
   request.open("GET", requestURL, true)
