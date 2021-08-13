@@ -2,19 +2,20 @@
   "name": "Get AdThrive/CAM sites",
   "version": "1.6",
   "description": "Quickly pull AdThrive or CAM site details",
-  "permissions": ["declarativeContent", "webRequest", "webRequestBlocking", "*://*.adthrive.com/*", "*://*.cafemedia.com/*", "*://localhost/*"],
+  "permissions": ["declarativeContent", "webRequest", "declarativeNetRequest" ],
+  "host_permissions": ["*://*.adthrive.com/*", "*://*.cafemedia.com/*", "*://localhost/*"],
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "icons": {
     "16": "adThrive16.png",
     "48": "adThrive48.png",
     "128": "adThrive128.png"
   },
-  "page_action": {
+  "action": {
     "default_popup": "popup.html"
   },
-  "manifest_version": 2,
+  "manifest_version": 3,
   "content_scripts": [
     {
       "matches": ["*://*.publisher.adthrive.com/*", "*://*.admin.adthrive.com/*"],
