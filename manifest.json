@@ -2,8 +2,15 @@
   "name": "Get AdThrive/CAM sites",
   "version": "1.6",
   "description": "Quickly pull AdThrive or CAM site details",
-  "permissions": ["declarativeContent", "webRequest", "declarativeNetRequest" ],
+  "permissions": ["declarativeContent", "webRequest", "declarativeNetRequest", "storage"],
   "host_permissions": ["*://*.adthrive.com/*", "*://*.cafemedia.com/*", "*://localhost/*"],
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
   "background": {
     "service_worker": "background.js"
   },

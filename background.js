@@ -11,37 +11,43 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-   if (changeInfo.status == 'complete') {
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+chrome.tabs.onUpdated.addListener(function (_tabId, changeInfo, _tab) {
+  if (changeInfo.status == 'complete') {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (tabs.length > 0) {
         chrome.tabs.sendMessage(tabs[0].id, { message: "getToken" }, function (response) { });
-        chrome.tabs.sendMessage(tabs[0].id, {message: "checkTabInstance"}, function(response) {});
-      });
-   }
+        chrome.tabs.sendMessage(tabs[0].id, { message: "checkTabInstance" }, function (response) { });
+      }
+    });
+  }
+  return true;
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message === 'got_token') {
-    window.localStorage.setItem("token", request.data);
+  if (request.message === 'redirect') {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      addRules: [{
+        id: 5,
+        priority: 1,
+        action: {
+          type: "redirect",
+          redirect: {
+            regexSubstitution: request.data
+          }
+        },
+        condition: {
+          regexFilter: "/publisher-api.development.cafemedia.com/develop/",
+          resourceTypes: [
+            "xmlhttprequest"
+          ]
+        }
+      }],
+    })
   }
-});
-
-chrome.webRequest.onHeadersReceived.addListener(
-    redirectUrl,
-    {urls: ["*://develop.api.dev.adthrive.com/*", "*://publisher-api.development.cafemedia.com/develop/*"]},
-    ["blocking"]
-);
-
-
-function redirectUrl(details) {
-  if (window.localStorage.getItem('redirect') !== null) {
-    let url = details.url;
-    const redirectUrl = `publisher-api.development.cafemedia.com/${window.localStorage.getItem('apiBranch')}`;
-
-    url = url.includes('develop.api.dev.adthrive.com') ? url.replace("develop.api.dev.adthrive.com", redirectUrl) : url.replace("publisher-api.development.cafemedia.com/develop", redirectUrl);
-
-    return {
-      redirectUrl: url
-    };
+  else if (request.message === 'disable-redirect') {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [5],
+    })
   }
-}
+})
+
