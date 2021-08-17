@@ -39,19 +39,6 @@ function saveOptions(value) {
   setAPIBranch();
 }
 
-function setAPIBranch() {
-  const setAPIInstance = document.getElementById('apiCheck');
-  activateRedirects(setAPIInstance.checked);
-
-  const branchName = document.getElementById('branch-name');
-  if (branchName.value !== '') {
-    window.localStorage.setItem("apiBranch", branchName.value);
-  }
-  else {
-    window.localStorage.removeItem("apiBranch");
-  }
-}
-
 function updateConfirmation() {
   const status = document.getElementById('status');
   status.style.textAlign = 'center'
@@ -66,8 +53,6 @@ function updateConfirmation() {
 
 function restore_options() {
   const savedInstance = window.localStorage.getItem('instance');
-  const savedAPIBranch = window.localStorage.getItem('apiBranch');
-  const redirects = window.localStorage.getItem('redirect');
 
   if (savedInstance === 'Live') {
     document.getElementById('instance').value = savedInstance;
@@ -77,24 +62,5 @@ function restore_options() {
     const qaToken = window.localStorage.getItem('qaToken');
     document.getElementById('instance').value = savedInstance;
     document.getElementById('tokenField').value = qaToken;
-  }
-
-  if (savedAPIBranch !== null && savedAPIBranch !== '') {
-    document.getElementById('branch-name').value = savedAPIBranch;
-  }
-
-  if (redirects) {
-    document.getElementById('apiCheck').checked = true;
-  }
-
-
-}
-
-function activateRedirects(activate_boolean) {
-  if (activate_boolean) {
-    window.localStorage.setItem("redirect", true);
-  }
-  else {
-    window.localStorage.removeItem("redirect");
   }
 }

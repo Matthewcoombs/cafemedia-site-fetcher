@@ -1,6 +1,7 @@
 window.onload = () => {
+  initBranchRedirectFields();
   const instanceDetails = verifyInstance();
-  const submitButton = document.getElementById('submit')
+  const submitButton = document.getElementById('submit');
   submitButton.addEventListener("click", function (event) {
     event.preventDefault();
     clearListItems();
@@ -8,6 +9,14 @@ window.onload = () => {
   })
 }
 
+// Set the token in local storage whenever its pulled from the production
+// instance of publisher dashboard or admin dashboard.
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === 'got_token') {
+    window.localStorage.setItem("token", request.data);
+  }
+  return true;
+});
 
 function clearListItems() {
   let listItemCollections = document.body.getElementsByTagName('li');
@@ -31,7 +40,7 @@ function contentLoading(isLoading) {
   }
 }
 
-function appendListItems(resData) {
+function appendListItems(resData, instance) {
   handleMetaData(resData);
 
   for (const data of resData.data) {
@@ -40,6 +49,14 @@ function appendListItems(resData) {
     new_list_item.innerText = `${data.name} | ${data.service} | ${data.id}`;
     new_list_item.className = 'list-group-item';
     new_list_item.style.padding = 2;
+
+    if (instance === 'QA') {
+      const spanInstance = document.createElement('span');
+      spanInstance.style.color = 'rgb(135, 207, 76)';
+      spanInstance.innerText = ' (QA Site)';
+      new_list_item.appendChild(spanInstance);
+    }
+
     content.appendChild(new_list_item);
   }
 }
@@ -80,6 +97,16 @@ function processGetRequestInputs(instanceDetail) {
 }
 
 function verifyInstance() {
+  const redirects = window.localStorage.getItem('redirect');
+  if (redirects) {
+    document.getElementById('apiCheck').checked = true;
+  }
+
+  const savedAPIBranch = window.localStorage.getItem('apiBranch');
+  if (savedAPIBranch !== null && savedAPIBranch !== '') {
+    document.getElementById('branch-name').value = savedAPIBranch;
+  }
+
   let instanceDetails = {
     key: '',
     domain: '',
@@ -95,14 +122,14 @@ function verifyInstance() {
 
   const instance = instanceDetails.instance;
   if (instance === 'QA') {
-    instanceDetails.key = 'qaToken';
-    instanceDetails.domain = 'develop.api.dev.adthrive.com';
-
-    const heading = document.getElementById('nav-brand');
+    const header = document.getElementById('header');
     const spanInstance = document.createElement('span');
     spanInstance.style.color = 'rgb(135, 207, 76)';
-    spanInstance.innerText = ' [QA INSTANCE]';
-    heading.appendChild(spanInstance);
+    spanInstance.innerText = 'QA Instance';
+    header.appendChild(spanInstance);
+
+    instanceDetails.key = 'qaToken';
+    instanceDetails.domain = 'publisher-api.development.cafemedia.com/develop';
     return instanceDetails;
   }
   else {
@@ -110,6 +137,59 @@ function verifyInstance() {
     instanceDetails.domain = 'publisher-api.adthrive.com';
     return instanceDetails;
   }
+}
+
+function setAPIBranch() {
+  const setAPIInstance = document.getElementById('apiCheck');
+  activateRedirects(setAPIInstance.checked);
+
+  const branchName = document.getElementById('branch-name');
+  if (branchName.value !== '') {
+    window.localStorage.setItem("apiBranch", branchName.value);
+  }
+  else {
+    window.localStorage.removeItem("apiBranch");
+  }
+}
+
+function activateRedirects(activate_boolean) {
+  // Disabling redirects for api branch instance save updates
+ chrome.runtime.sendMessage({ message: 'disable-redirect', data: 'dummy' });
+  
+
+  if (activate_boolean) {
+    handleRedirectNoticeVisibility(activate_boolean);
+    window.localStorage.setItem("redirect", true);
+    const redirectUrl = `publisher-api.development.cafemedia.com/${window.localStorage.getItem('apiBranch')}/`;
+    chrome.runtime.sendMessage({ message: 'redirect', data: redirectUrl });
+  }
+  else {
+    handleRedirectNoticeVisibility(activate_boolean)
+    window.localStorage.removeItem("redirect");
+    chrome.runtime.sendMessage({ message: 'disable-redirect', data: 'dummy' });
+  }
+}
+
+function handleRedirectNoticeVisibility(boolean) {
+  let redirectFlag = document.getElementById('redirect-flag');
+  if (boolean) {
+    redirectFlag.style.visibility = 'visible'
+    redirectFlag.style.color = 'rgb(135, 207, 76)';
+    redirectFlag.innerText = 'Redirection ON';
+  }
+  else {
+    redirectFlag.style.visibility = 'hidden'
+  }
+}
+
+function initBranchRedirectFields() {
+  const setAPIInstance = document.getElementById('apiCheck');
+  setAPIInstance.addEventListener("change", setAPIBranch);
+
+  const branchNameField = document.getElementById('branch-name');
+  branchNameField.addEventListener("input", function (_event) {
+    window.localStorage.setItem("apiBranch", branchNameField.value);
+  });
 }
 
 
@@ -130,7 +210,7 @@ function getSites(instanceDetail) {
   request.onreadystatechange = function () {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
       resData = JSON.parse(this.response);
-      appendListItems(resData);
+      appendListItems(resData, instanceDetail.instance);
       contentLoading(false);
     }
     else if (this.readyState === XMLHttpRequest.DONE && this.status === 401) {

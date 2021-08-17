@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
+  function(request, _sender, _sendResponse) {
     if (request.message === "getToken") {
       let key = null;
       switch (window.location.hostname) {

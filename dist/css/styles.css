@@ -10,13 +10,13 @@ body {
   top: 0;
   z-index: 5;
   background-color: #fff;
-  height: 250px;
+  height: 314px;
   width: 400px;
   box-shadow: 0px 3px 3px rgb(90, 87, 87);
 }
 
 #content {
-  margin-top: 255px;
+  margin-top: 314px;
 }
 
 #site-input {
@@ -39,7 +39,7 @@ body {
 #spinner {
   position: fixed;
   left: 40vw;
-  top: 60vh;
+  top: 50vh;
 }
 
 #submit {
