@@ -28,15 +28,12 @@ function clearListItems() {
 }
 
 function contentLoading(isLoading) {
-  let loadingSpinner = document.getElementById('spinner')
-  let content = document.getElementById('content');
+  let loadingSpinner = document.getElementById('spinner');
   if (isLoading) {
-    content.style.display = 'none'
     loadingSpinner.style.display = 'block';
   }
   else {
     loadingSpinner.style.display = 'none';
-    content.style.display = 'block';
   }
 }
 
@@ -44,7 +41,7 @@ function appendListItems(resData, instance) {
   handleMetaData(resData);
 
   for (const data of resData.data) {
-    let content = document.getElementById('content');
+    let listItemSection = document.getElementsByClassName('list-items')[0];
     let new_list_item = document.createElement('li')
     new_list_item.innerText = `${data.name} | ${data.service} | ${data.id}`;
     new_list_item.className = 'list-group-item';
@@ -57,7 +54,7 @@ function appendListItems(resData, instance) {
       new_list_item.appendChild(spanInstance);
     }
 
-    content.appendChild(new_list_item);
+    listItemSection.appendChild(new_list_item);
   }
 }
 
